@@ -1,23 +1,24 @@
 package com.kovalsikoski.johan.wallpapermanager
 
-import android.app.WallpaperManager
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.WindowManager
-import java.io.IOException
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
+    private val wallpaperList: MutableList<Bitmap> = mutableListOf()
+
     private var measureWidth: Int = 0
     private var measureHeight: Int = 0
 
-    private lateinit var resizedImage: Bitmap
+    private lateinit var adapter: WallpaperAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,19 +26,23 @@ class MainActivity : AppCompatActivity() {
 
         getResolutionMeasure()
 
-        resizedImage = resizeImage(R.drawable.wallpaper1, measureWidth, measureHeight)
+        wallpaperList.add(resizeImage(R.drawable.wallpaper1, measureWidth, measureHeight))
+        wallpaperList.add(resizeImage(R.drawable.wallpaper2, measureWidth, measureHeight))
+        wallpaperList.add(resizeImage(R.drawable.wallpaper3, measureWidth, measureHeight))
+        wallpaperList.add(resizeImage(R.drawable.wallpaper4, measureWidth, measureHeight))
+        wallpaperList.add(resizeImage(R.drawable.wallpaper5, measureWidth, measureHeight))
 
+        initRecyclerView()
 
-        val wallpaperManager = WallpaperManager.getInstance(applicationContext)
+    }
 
-        wallpaperManager.clear() //Clear and set back default System's wallpaper
+    private fun initRecyclerView() {
+        val recyclerView = wallpaperRecyclerView
+        adapter = WallpaperAdapter(wallpaperList, this)
+        recyclerView.adapter = adapter
 
-        try {
-            wallpaperManager.setBitmap(resizedImage)
-        } catch (e: IOException){
-            e.message
-        }
-
+        val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
+        recyclerView.layoutManager = layoutManager
     }
 
     private fun getResolutionMeasure() {
@@ -55,5 +60,4 @@ class MainActivity : AppCompatActivity() {
 
         return Bitmap.createScaledBitmap(drawableToBitmap, reqWidth, reqHeight, true)
     }
-
 }

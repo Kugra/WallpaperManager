@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Wallpaper Manager</string>
+    <string name="set_wallpaper">Pick this one!</string>
+    <string name="content_description_wallpaper">Wallpaper</string>
+    <string name="press_to_select">Long press to select</string>
+    <string name="wallpaper_toast">Wallpaper has changed!</string>
 </resources>
