@@ -3,7 +3,9 @@ package com.kovalsikoski.johan.wallpapermanager
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Point
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -59,5 +61,16 @@ class MainActivity : AppCompatActivity() {
         val drawableToBitmap = BitmapFactory.decodeResource(resources, imageResourcePath)
 
         return Bitmap.createScaledBitmap(drawableToBitmap, reqWidth, reqHeight, true)
+    }
+
+    fun convertToBitmap(drawable: Drawable, widthPixels: Int, heightPixels: Int): Bitmap {
+
+        val mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(mutableBitmap)
+
+        drawable.setBounds(0, 0, widthPixels, heightPixels)
+        drawable.draw(canvas)
+
+        return mutableBitmap
     }
 }
